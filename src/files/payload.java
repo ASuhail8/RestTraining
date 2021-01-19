@@ -35,7 +35,7 @@ public class payload {
 	public static String coursePrice() {
 		return "{\r\n"
 				+ "  \"dashboard\": {\r\n"
-				+ "    \"purchaseAmount\": 910,\r\n"
+				+ "    \"purchaseAmount\": 1560,\r\n"
 				+ "    \"website\": \"rahulshettyacademy.com\"\r\n"
 				+ "  },\r\n"
 				+ "  \"courses\": [\r\n"
@@ -53,8 +53,27 @@ public class payload {
 				+ "      \"title\": \"RPA\",\r\n"
 				+ "      \"price\": 45,\r\n"
 				+ "      \"copies\": 10\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"title\": \"Rest Assured\",\r\n"
+				+ "      \"price\": 80,\r\n"
+				+ "      \"copies\": 5\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"title\": \"Appium\",\r\n"
+				+ "      \"price\": 50,\r\n"
+				+ "      \"copies\": 5\r\n"
 				+ "    }\r\n"
 				+ "  ]\r\n"
 				+ "}";
+	}
+	
+	public static String addBook(String isbn,String aisle) {
+		return "{ \r\n"
+				+ "\"name\":\"Learn Appium Automation with Java\", \r\n"
+				+ "\"isbn\":\""+isbn+"\", \r\n"
+				+ "\"aisle\":\""+aisle+"\", \r\n"
+				+ "\"author\":\"John foe\" \r\n"
+				+ "} ";
 	}
 }
