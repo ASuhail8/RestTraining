@@ -3,6 +3,10 @@ import io.restassured.path.json.JsonPath;
 
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.testng.Assert;
 
 import files.ReusableMethods;
@@ -12,14 +16,14 @@ import static io.restassured.RestAssured.*;
 
 public class basics {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		// Add Place
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		String response = given().log().all().queryParam("key", "qaclick123").header("Content-Type", "application/json")
-				.body(payload.AddPlace()).when().post("/maps/api/place/add/json").then().assertThat().statusCode(200)
-				.body("scope", equalTo("APP")).header("Server", "Apache/2.4.18 (Ubuntu)").extract().response()
-				.asString();
+				.body(new String(Files.readAllBytes(Paths.get("./jsonFiles/addPlace.json")))).when()
+				.post("/maps/api/place/add/json").then().assertThat().statusCode(200).body("scope", equalTo("APP"))
+				.header("Server", "Apache/2.4.18 (Ubuntu)").extract().response().asString();
 
 		System.out.println("Response :" + response);
 
