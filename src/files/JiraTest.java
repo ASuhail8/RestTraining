@@ -2,6 +2,8 @@ package files;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.File;
+
 import io.restassured.RestAssured;
 import io.restassured.filter.session.SessionFilter;
 
@@ -35,11 +37,23 @@ public class JiraTest {
 		// Add a comment
 
 		given().log().all().header("Content-Type", "application/json").pathParam("id", "10102")
-				.body("{\r\n" + "    \"body\": \"Fourth comment on 21st jan\",\r\n" + "    \"visibility\": {\r\n"
+				.body("{\r\n" + "    \"body\": \"third comment on 22nd jan\",\r\n" + "    \"visibility\": {\r\n"
 						+ "        \"type\": \"role\",\r\n" + "        \"value\": \"Administrators\"\r\n" + "    }\r\n"
 						+ "}")
 				.filter(session).when().post("/rest/api/2/issue/{id}/comment").then().log().all().assertThat()
 				.statusCode(201);
+		
+		// Add a attachemnt using multipart 
+		
+		given().log().all().header("X-Atlassian-Token","no-check").header("Content-Type","multipart/form-data")
+		.multiPart("file", new File("jira.txt")).filter(session).pathParam("id", "10102")
+		.when().post("/rest/api/2/issue/{id}/attachments").then().log().all().assertThat().statusCode(200);
+		
+		//get issue
+		
+		String issueDetails = given().filter(session).pathParam("id", "10102").queryParam("fields", "comment").log().all().when().get("/rest/api/2/issue/{id}")
+		.then().log().all().assertThat().statusCode(200).extract().response().asString();
+		System.out.println(issueDetails);
 
 	}
 
