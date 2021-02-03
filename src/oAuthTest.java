@@ -8,7 +8,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
+import pojo.getCourse;
 
 public class oAuthTest {
 
@@ -49,9 +51,11 @@ public class oAuthTest {
 
 		// Actual Request to hit rahul shetty academy
 
-		String response = given().queryParam("access_token", accessToken).log().all().when()
-				.get("https://rahulshettyacademy.com/getCourse.php").asString();
-		System.out.println("Response :" + response);
+		getCourse getCourse = given().queryParam("access_token", accessToken).expect().defaultParser(Parser.JSON).when()
+				.get("https://rahulshettyacademy.com/getCourse.php").as(getCourse.class);
+
+		System.out.println(getCourse.getInstructor());
+		System.out.println(getCourse.getLinkedIn());
 
 	}
 
