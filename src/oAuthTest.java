@@ -1,15 +1,21 @@
 
 import static io.restassured.RestAssured.given;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
 
 import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
+import pojo.API;
+import pojo.WebAutomation;
 import pojo.getCourse;
 
 public class oAuthTest {
@@ -17,7 +23,7 @@ public class oAuthTest {
 	public static void main(String[] args) throws InterruptedException {
 
 		// Build the code and hit the url using selenium
-
+		String[] WebAutomationCourseTitles = { "Selenium Webdriver Java", "Cypress", "Protractor" };
 		System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
 		WebDriver driver = new FirefoxDriver();
 		driver.get(
@@ -29,7 +35,7 @@ public class oAuthTest {
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("floweroflover");
 		driver.findElement(By.xpath("//input[@type='password']")).sendKeys(Keys.ENTER);
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 
 		String url = driver.getCurrentUrl();
 		driver.quit();
@@ -51,12 +57,30 @@ public class oAuthTest {
 
 		// Actual Request to hit rahul shetty academy
 
-		getCourse getCourse = given().queryParam("access_token", accessToken).expect().defaultParser(Parser.JSON).when()
+		getCourse gc = given().queryParam("access_token", accessToken).expect().defaultParser(Parser.JSON).when()
 				.get("https://rahulshettyacademy.com/getCourse.php").as(getCourse.class);
 
-		System.out.println(getCourse.getInstructor());
-		System.out.println(getCourse.getLinkedIn());
+		List<API> apiCourses = gc.getCourses().getApi();
+		for (int i = 0; i < apiCourses.size(); i++) {
+			if (apiCourses.get(i).getCourseTitle().equalsIgnoreCase("Rest Assured Automation using Java")) {
+				System.out.println(apiCourses.get(i).getPrice());
+			}
+		}
 
+		// get the course name of web automation
+		List<WebAutomation> webAutomationCourses = gc.getCourses().getWebAutomation();
+		// To store dynamic value use ArrayList
+		ArrayList<String> al = new ArrayList<String>();
+		for (int i = 0; i < webAutomationCourses.size(); i++) {
+			al.add(webAutomationCourses.get(i).getCourseTitle());
+		}
+		System.out.println(al);
+
+		// convert arrays to arrayList
+		List<String> expectedList = Arrays.asList(WebAutomationCourseTitles);
+		System.out.println(expectedList);
+
+		Assert.assertTrue(al.equals(expectedList));
 	}
 
 }
