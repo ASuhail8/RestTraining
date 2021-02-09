@@ -1,18 +1,14 @@
-import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
-
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.testng.Assert;
 
 import files.ReusableMethods;
 import files.payload;
-
-import static io.restassured.RestAssured.*;
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 
 public class basics {
 

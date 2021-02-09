@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import pojo.AddApiResponse;
 import pojo.GoogleAddAPI;
 import pojo.Location;
